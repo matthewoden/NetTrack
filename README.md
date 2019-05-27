@@ -5,14 +5,15 @@ dispatching notifications when known devices connect to the network.
 
 ## Process
 
-Scrapes the subnet off the broadcast ip, `ping -c 1 192.168.1.255`, then checking
-the arp cache (`arp -a`), and processing the results.
+1. pings the broadcast ip for the current subnet:  `ping -c 1 192.168.1.255`
+2. checks the arp cache: `arp -a`
+3. diffs the results against the last known state, filtering out incomplete/blacklisted devices.
 
 Uses postgres for persistance, which seems like overkill.
 
 TODO:
 
-- add debounce period for disconnects within 5 minutes.
+- add debounce period for disconnects within 5 minutes (longer?)
 - refactor
 - test
 
