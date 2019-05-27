@@ -35,7 +35,7 @@ defmodule NetTrack.Connection do
   def add_many(connections) do
     connections
     |> Enum.map(fn c -> Host.changeset(%Host{}, c) end)
-    |> Repo.bulk_insert(on_conflict: :nothing)
+    |> Repo.bulk_insert(on_conflict: :nothing, returning: true)
   end
 
   def update_many(connections, change) do
@@ -85,13 +85,12 @@ defmodule NetTrack.Connection do
       |> MapSet.new()
 
     current_set = MapSet.new(current)
-    removed = MapSet.difference(previous, current_set)
+    removed = MapSet.difference(previous, current_set) |> Enum.to_list()
     added = MapSet.difference(current_set, previous)
 
     with {:ok, added} <- add_many(added),
          added <- Map.values(added),
-         {:ok, removed} <- update_many(removed, active: false),
-         removed <- Map.values(removed) do
+         {:ok, _removed} <- update_many(removed, active: false) do
       total_added = length(added)
       total_removed = length(removed)
       total_changes = total_added + total_removed

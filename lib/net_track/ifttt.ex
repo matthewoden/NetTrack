@@ -10,7 +10,7 @@ defmodule NetTrack.IFTTT do
   plug(Tesla.Middleware.BaseUrl, "https://maker.ifttt.com/trigger/")
   plug(Tesla.Middleware.JSON)
 
-  def wifi_arrival(%{host: host}) do
-    post("/wifi_arrival/with/key/#{@webhook_key}", %{value1: host}) |> IO.inspect()
+  def wifi_arrival(%{hostname: hostname, nickname: nickname}) do
+    post("/wifi_arrival/with/key/#{@webhook_key}", %{value1: nickname || hostname})
   end
 end

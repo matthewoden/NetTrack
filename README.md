@@ -3,7 +3,18 @@
 Tracks changes in hosts on the current subnet. Prototype for a "friend doorbell",
 dispatching notifications when known devices connect to the network.
 
+## Process
+
+Scrapes the subnet off the broadcast ip, `ping -c 1 192.168.1.255`, then checking
+the arp cache (`arp -a`), and processing the results.
+
 Uses postgres for persistance, which seems like overkill.
+
+TODO:
+
+- add debounce period for disconnects within 5 minutes.
+- refactor
+- test
 
 ## Installation
 
