@@ -1,8 +1,8 @@
 defmodule NetTrack.Command do
-  # ping
+  @commander Application.get_env(:net_track, :commander, System)
 
   def arp do
-    {result, 0} = System.cmd("arp", ["-a"])
+    {result, 0} = command("arp", ["-a"])
 
     results =
       String.split(result, "\n", trim: true)
@@ -23,17 +23,21 @@ defmodule NetTrack.Command do
   def ping(ip \\ "192.168.1.255") do
     wait_op = if darwin?(), do: "-W", else: "-w"
 
-    {result, 0} = System.cmd("ping", ~w(-c 1 #{wait_op} 5 -s 64 #{ip}))
+    {result, 0} = command("ping", ~w(-c 1 #{wait_op} 5 -s 64 #{ip}))
 
     if String.starts_with?(result, "PING") do
       :ok
     else
-      {:error, result}
+      {:error, :invalid_ping}
     end
   end
 
   def darwin? do
-    {output, 0} = System.cmd("uname", [])
+    {output, 0} = command("uname", [])
     String.trim_trailing(output) == "Darwin"
+  end
+
+  defp command(bin, arglist) do
+    @commander.cmd(bin, arglist)
   end
 end

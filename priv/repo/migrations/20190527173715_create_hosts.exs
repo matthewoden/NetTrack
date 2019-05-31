@@ -2,7 +2,7 @@ defmodule NetTrack.Repo.Migrations.CreateHosts do
   use Ecto.Migration
 
   def change do
-    create table(:hosts) do
+    create table(:hosts, primary_key: false) do
       add(:mac_address, :string, primary_key: true)
       add(:hostname, :string)
       add(:nickname, :string)

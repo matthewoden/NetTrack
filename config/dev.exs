@@ -6,3 +6,8 @@ config :net_track, NetTrack.Repo,
   password: System.get_env("NETTRACK_DB_PASSWORD"),
   hostname: "localhost",
   port: 5432
+
+config :net_track,
+  subscriptions: [
+    {NetTrack.IFTTT, :wifi_arrival}
+  ]

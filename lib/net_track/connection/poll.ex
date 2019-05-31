@@ -4,38 +4,44 @@ defmodule NetTrack.Connection.Poll do
 
   alias NetTrack.Connection
 
-  @subscriptions Application.get_env(:net_track, :subscriptions, [])
-
   def start_link(_) do
-    Enum.each(@subscriptions, fn {mod, fun} ->
+    subscriptions = Application.get_env(:net_track, :subscriptions, [])
+
+    Enum.each(subscriptions, fn {mod, fun} ->
       {:ok, _} = Registry.register(Connection.Registry, :arrivals, {mod, fun})
     end)
 
-    state = %{connections: MapSet.new(), blacklist: []}
+    state = %{connections: [], blacklist: []}
     {:ok, _pid} = GenServer.start_link(__MODULE__, state, name: __MODULE__)
   end
 
   def init(state) do
-    schedule_poll(1000)
-    blacklist = Connection.get_blacklist()
-    connections = Connection.list()
-    {:ok, %{state | blacklist: blacklist ++ state.blacklist, connections: connections}}
+    {:ok, state, {:continue, :fetch}}
   end
 
   defp schedule_poll(time) do
     Process.send_after(self(), :poll, time)
   end
 
-  def subscribe(mod, fun) do
+  def subscribe({mod, fun}) do
     {:ok, _} = Registry.register(Connection.Registry, :arrivals, {mod, fun})
   end
 
-  def unsubscribe(mod, fun) do
+  def unsubscribe({mod, fun}) do
     :ok = Registry.unregister_match(Connection.Registry, :arrivals, {mod, fun})
   end
 
+  def handle_continue(:fetch, state) do
+    blacklist = Connection.get_blacklist()
+    connections = Connection.list()
+    schedule_poll(1000)
+    state = %{state | blacklist: blacklist ++ state.blacklist, connections: connections}
+
+    {:noreply, state}
+  end
+
   def handle_info(:poll, state) do
-    connections =
+    {:ok, connections} =
       Connection.diff(
         list_connections(),
         state.connections,

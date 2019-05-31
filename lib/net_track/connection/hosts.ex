@@ -13,14 +13,12 @@ defmodule NetTrack.Connection.Host do
     timestamps()
   end
 
-  @fields ~w(hostname mac_address nickname blacklisted active)a
-  @required ~w(hostname mac_address)a
-
   @spec changeset(Host.t(), map) :: Ecto.Changeset.t()
   @doc false
   def changeset(%Host{} = host, params \\ %{}) do
     host
-    |> cast(params, @fields)
-    |> validate_required(@required)
+    |> cast(params, [:hostname, :mac_address, :nickname, :blacklisted, :active])
+    |> validate_required([:hostname, :mac_address])
+    |> unique_constraint(:mac_address)
   end
 end
