@@ -38,8 +38,10 @@ _build/prod/rel/net_track/bin/net_track foreground
 
 ## Configuration
 
+### Database
+
 NetTrack uses Postgres for blacklist/activity persistance, and expects the
-database and user exist prior to start.
+database and user to exist on the postgres instance prior to deployment.
 
 ### IFTTT (Push notifications)
 
@@ -49,7 +51,7 @@ and enable the following services:
 - [webhook](https://ifttt.com/maker_webhooks)
 - [IFTTT app notifications](https://ifttt.com/services/if_notifications)
 
-Make note of your webhook key, to use below.
+Make note of your webhook key, as we'll use that later.
 
 ### Environment
 
@@ -61,8 +63,8 @@ The following environment variables can be used to configure your NetTrack insta
 NETTRACK_DB_USER #your postgres user
 NETTRACK_DB_PASSWORD #your postgres password
 NETTRACK_DB_DATABASE #your postgres database
-IFTTT_WEBHOOK_KEY #your IFTTT webhook token
 NETTRACK_DB_HOST #your postgres host
+IFTTT_WEBHOOK_KEY #your IFTTT webhook token
 ```
 
 #### Optional
@@ -77,4 +79,5 @@ TODO:
 - add UI layer for adding nicknames, blacklists
 - add option to use sqlite for persistance
 - add option to not send notifications if certain devices are absent
-- add option to take a list of IFTTT endpoints for notifications 
+- add option to take a list of IFTTT endpoints for notifications
+- add API layer to enable hooks into homebridge
