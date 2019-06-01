@@ -14,10 +14,13 @@ build: ## Build the Docker image
 				-t $(APP_NAME):$(APP_VSN)-$(BUILD) \
 				-t $(APP_NAME):latest .
 
-
 push: ## 
 		docker tag $(APP_NAME):latest matthewoden/$(APP_NAME):latest
+		docker tag $(APP_NAME):$(APP_VSN)-$(BUILD) matthewoden/$(APP_NAME):$(APP_VSN)-$(BUILD)
+
+		docker push matthewoden/$(APP_NAME):$(APP_VSN)-$(BUILD)
 		docker push matthewoden/$(APP_NAME):latest
+
 
 run: ## Run the app in Docker
 		docker run --env-file config/docker.env \

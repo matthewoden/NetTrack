@@ -1,0 +1,15 @@
+version: "2"
+
+services:
+  homebridge:
+    image: matthewoden/net_track:latest
+    container_name: nettrack
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      - NETTRACK_DB_USER=nettrack
+      - NETTRACK_DB_DATABASE=nettrack
+      - NETTRACK_DB_PASSWORD=nettrack
+      - IFTTT_WEBHOOK_KEY=your_IFTTT_webhook_token
+      - NETTRACK_DB_PORT=5432
+      - NETTRACK_DB_HOST=your_postgres_host

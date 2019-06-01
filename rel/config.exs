@@ -65,4 +65,10 @@ release :net_track do
       {:copy, "rel/config/config.exs", "etc/config.exs"}
     ]
   )
+
+  set(
+    commands: [
+      migrate: "rel/commands/migrate.sh"
+    ]
+  )
 end
