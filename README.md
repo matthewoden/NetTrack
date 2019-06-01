@@ -4,10 +4,12 @@ Prototype for a "friend doorbell", dispatching push notifications when known dev
 connect to the local network.
 
 ## Process
+NetTrack is a thin wrapper over a couple shell commands.
 
 1. pings the broadcast ip for the current subnet: `ping -c 1 192.168.1.255`
 2. checks the arp cache: `arp -a`
-3. diffs the results against the last known state, filtering out incomplete/blacklisted devices.
+3. Diffs the arp table results against the last check of the arp table, filtering out incomplete/blacklisted devices.
+4. Sends notifications for any new arrivals.
 
 ## Running NetTrack
 
@@ -73,4 +75,6 @@ TODO:
 
 - add debounce period for disconnects within a set period
 - add UI layer for adding nicknames, blacklists
-- add option to use sqlite for persistance?
+- add option to use sqlite for persistance
+- add option to not send notifications if certain devices are absent
+- add option to take a list of IFTTT endpoints for notifications 
