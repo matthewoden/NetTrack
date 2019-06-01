@@ -67,7 +67,7 @@ NETTRACK_DB_HOST #your postgres host
 IFTTT_WEBHOOK_KEY #your IFTTT webhook token
 ```
 
-#### Optional
+#### optional:
 
 ```bash
 NETTRACK_DB_PORT #your postgres port, defaults to 5432
