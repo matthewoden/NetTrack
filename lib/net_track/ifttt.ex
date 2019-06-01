@@ -1,16 +1,16 @@
 defmodule NetTrack.IFTTT do
   use Tesla
-
-  @webhook_key Application.get_env(
-                 :net_track,
-                 :ifttt_webhook_key,
-                 System.get_env("IFTTT_WEBHOOK_KEY")
-               )
+  require Logger
 
   plug(Tesla.Middleware.BaseUrl, "https://maker.ifttt.com/trigger/")
   plug(Tesla.Middleware.JSON)
+  plug(Tesla.Middleware.Logger)
 
   def wifi_arrival(%{hostname: hostname, nickname: nickname}) do
-    post("/wifi_arrival/with/key/#{@webhook_key}", %{value1: nickname || hostname})
+    Logger.debug("Firing WIFI arrival event for #{hostname}")
+
+    post("/wifi_arrival/with/key/#{System.get_env("IFTTT_WEBHOOK_KEY")}", %{
+      value1: nickname || hostname
+    })
   end
 end

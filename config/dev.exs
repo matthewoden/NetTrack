@@ -11,3 +11,5 @@ config :net_track,
   subscriptions: [
     {NetTrack.IFTTT, :wifi_arrival}
   ]
+
+config :logger, level: :debug

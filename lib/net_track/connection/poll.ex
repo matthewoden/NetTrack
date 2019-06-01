@@ -49,11 +49,11 @@ defmodule NetTrack.Connection.Poll do
       )
 
     if connections.total_added > 0 do
-      Logger.debug("Connections Added: #{connections.total_added}, #{inspect(connections.added)}")
+      Logger.info("Connections Added: #{connections.total_added}, #{inspect(connections.added)}")
     end
 
     if connections.total_removed > 0 do
-      Logger.debug(
+      Logger.info(
         "Connections Removed: #{connections.total_removed}, #{inspect(connections.removed)}"
       )
     end

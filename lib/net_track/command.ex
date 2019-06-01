@@ -15,13 +15,19 @@ defmodule NetTrack.Command do
         end)
         |> Stream.reject(fn x -> length(x) !== 3 end)
         |> Stream.reject(fn [host | _] -> host == "broadcasthost" end)
-        |> Enum.map(fn [host, _, mac] -> %{hostname: host, mac_address: mac} end)
+        |> Enum.map(fn [host, _, mac] -> %{hostname: host, mac_address: normalize_mac(mac)} end)
 
       {:ok, results}
     else
       _ ->
         {:error, :invalid_arp}
     end
+  end
+
+  def normalize_mac(mac_address) do
+    String.split(mac_address, ":")
+    |> Enum.map(fn segment -> String.pad_leading(segment, 2, "0") end)
+    |> Enum.join(":")
   end
 
   @spec ping(broadcast_ip :: String.t()) :: :ok | {:error, :invalid_ping}

@@ -8,6 +8,9 @@ config :net_track, NetTrack.Repo,
   port: System.get_env("NETTRACK_DB_PORT") || 5434
 
 config :net_track,
+  ifttt_webhook_key: System.get_env("IFTTT_WEBHOOK_KEY"),
   subscriptions: [
     {NetTrack.IFTTT, :wifi_arrival}
   ]
+
+config :logger, level: :info

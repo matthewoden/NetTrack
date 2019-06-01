@@ -14,6 +14,11 @@ build: ## Build the Docker image
 				-t $(APP_NAME):$(APP_VSN)-$(BUILD) \
 				-t $(APP_NAME):latest .
 
+
+push: ## 
+		docker tag $(APP_NAME):latest matthewoden/$(APP_NAME):latest
+		docker push matthewoden/$(APP_NAME):latest
+
 run: ## Run the app in Docker
 		docker run --env-file config/docker.env \
 				--expose 4000 -p 4000:4000 \

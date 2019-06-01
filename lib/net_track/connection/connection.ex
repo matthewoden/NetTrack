@@ -59,7 +59,7 @@ defmodule NetTrack.Connection do
       |> Ecto.Changeset.change(active: true)
     end)
     |> Repo.bulk_insert(
-      on_conflict: {:replace, [:active]},
+      on_conflict: {:replace, [:hostname, :active]},
       conflict_target: :mac_address,
       returning: true
     )
