@@ -23,3 +23,4 @@ erl_crash.dump
 net_track-*.tar
 
 .elixir_ls
+config/docker.env
