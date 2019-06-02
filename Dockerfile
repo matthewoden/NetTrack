@@ -66,4 +66,4 @@ WORKDIR /opt/app
 
 COPY --from=builder /opt/built .
 
-CMD trap 'exit' INT; /opt/app/bin/${APP_NAME} migrate && /opt/app/bin/${APP_NAME} foreground
+CMD /opt/app/bin/${APP_NAME} migrate; trap 'exit' INT; /opt/app/bin/${APP_NAME} foreground
